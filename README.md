@@ -2,4 +2,4 @@
 
 * Бэкенд часть приложения
 
-[Backend](https://api.yourmovies.nomoreparties.sbs);
+[Backend](https://api.yourmovies.nomoreparties.sbs)

@@ -1,12 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const { errors } = require('celebrate');
+const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
+const { errors } = require('celebrate');
+const router = require('./routes/index');
 const { PORT, DB_CONNECT, DB_NAME } = require('./utils/config');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 const { checkSource } = require('./middlewares/cors');
-const router = require('./routes/index');
 const { errorHandler } = require('./middlewares/errorHandler');
 const limiter = require('./middlewares/rateLimit');
 
@@ -23,6 +24,7 @@ app.use(requestLogger);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(limiter);
 
 app.use(router);

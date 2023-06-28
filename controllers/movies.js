@@ -4,8 +4,8 @@ const ForbiddenError = require('../errors/forbiddenError');
 const BadRequestError = require('../errors/badRequestError');
 
 module.exports.getFilms = (req, res, next) => {
-  Movie.find({})
-    .populate(['owner', 'likes'])
+  Movie.find({ owner: req.user._id })
+    .populate(['owner'])
     .then((films) => {
       res.send(films);
     })
@@ -13,34 +13,8 @@ module.exports.getFilms = (req, res, next) => {
 };
 
 module.exports.createFilm = (req, res, next) => {
-  const owner = req.user._id;
-  const {
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailer,
-    nameRU,
-    nameEN,
-    thumbnail,
-    movieId,
-  } = req.body;
-
   Movie.create({
-    country,
-    director,
-    duration,
-    year,
-    description,
-    image,
-    trailer,
-    nameRU,
-    nameEN,
-    thumbnail,
-    movieId,
-    owner,
+    ...req.body, owner: req.user._id,
   })
     .then((filmItem) => res.send(filmItem))
     .catch((err) => {
@@ -53,13 +27,12 @@ module.exports.createFilm = (req, res, next) => {
 
 module.exports.deleteFilm = (req, res, next) => {
   Movie.findById(req.params.movieId)
-    .populate(['owner', 'likes'])
     .orFail(new NotFoundError('Такого фильма не существует'))
     .then((film) => {
       if (film.owner._id.toString() !== req.user._id) {
         return Promise.reject(new ForbiddenError('Недостаточно прав'));
       }
-      return film.deleteOne();
+      return film.deleteOne({ _id: film._id });
     })
     .then((film) => res.send(film))
     .catch((err) => {

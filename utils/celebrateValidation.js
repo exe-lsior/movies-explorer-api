@@ -1,5 +1,4 @@
 const { celebrate, Joi } = require('celebrate');
-const { validateLink } = require('./validate');
 
 const signin = celebrate({
   body: Joi.object().keys({
@@ -23,10 +22,10 @@ const postMovie = celebrate({
     duration: Joi.number().required(),
     year: Joi.number().required().min(1900).integer(),
     description: Joi.string().required().min(2).max(30),
-    image: Joi.string().required().min(2).custom(validateLink),
-    trailerLink: Joi.string().required().min(2).custom(validateLink),
-    thumbnail: Joi.string().required().min(2).custom(validateLink),
-    movieId: Joi.string().required().length(24).hex(),
+    image: Joi.string().required().min(2),
+    trailerLink: Joi.string().required().min(2),
+    thumbnail: Joi.string().required().min(2),
+    movieId: Joi.number().required(),
     nameRU: Joi.string().required().min(2).max(30),
     nameEN: Joi.string().required().min(2).max(30),
   }),

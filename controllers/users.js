@@ -49,6 +49,9 @@ module.exports.updateUser = (req, res, next) => {
       if (err.name === 'ValidationError') {
         return next(new BadRequestError('Переданы некорректные данные'));
       }
+      if (err.code === 11000) {
+        return next(new ConflictError('Пользователь с таким e-mail уже существует'));
+      }
       return next(err);
     });
 };
@@ -62,10 +65,6 @@ module.exports.login = (req, res, next) => {
         NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
         { expiresIn: '7d' },
       );
-      res.cookie('jwt', token, {
-        httpOnly: true,
-        maxAge: 3600000 * 24 * 7,
-      });
       res.send({ token });
     })
     .catch((err) => {

@@ -48,11 +48,6 @@ const userSchema = new mongoose.Schema({
     ref: 'user',
     required: true,
   },
-  likes: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'user',
-    default: [],
-  }],
   movieId: {
     type: Number,
     required: true,

@@ -10,37 +10,37 @@ const signin = celebrate({
 const signup = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    name: Joi.string().min(2).max(30),
+    name: Joi.string().required(),
     password: Joi.string().required(),
   }),
 });
 
 const postMovie = celebrate({
   body: Joi.object().keys({
-    country: Joi.string().required().min(2).max(30),
-    director: Joi.string().required().min(2).max(30),
+    country: Joi.string().required(),
+    director: Joi.string().required(),
     duration: Joi.number().required(),
-    year: Joi.number().required().min(1900).integer(),
-    description: Joi.string().required().min(2).max(30),
-    image: Joi.string().required().min(2).regex(/^https?:\/\//i),
-    trailerLink: Joi.string().required().min(2).regex(/^https?:\/\//i),
-    thumbnail: Joi.string().required().min(2).regex(/^https?:\/\//i),
+    year: Joi.string().required(),
+    description: Joi.string().required(),
+    image: Joi.string().required().regex(/^https?:\/\//i),
+    trailerLink: Joi.string().required().regex(/^https?:\/\//i),
+    thumbnail: Joi.string().required().regex(/^https?:\/\//i),
     movieId: Joi.number().required(),
-    nameRU: Joi.string().required().min(2).max(30),
-    nameEN: Joi.string().required().min(2).max(30),
+    nameRU: Joi.string().required(),
+    nameEN: Joi.string().required(),
   }),
 });
 
 const deleteMovie = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.number().required(),
+    movieId: Joi.string().required(),
   }),
 });
 
 const patchUser = celebrate({
   body: Joi.object().keys({
     email: Joi.string().email().required(),
-    name: Joi.string().required().min(2).max(30),
+    name: Joi.string().required(),
   }),
 });
 
